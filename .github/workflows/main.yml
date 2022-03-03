@@ -1,0 +1,36 @@
+name: Dokcer
+
+on:
+  push:
+      branches:
+        - main
+
+env:
+  IMAGE_NAME: ${{ format('{0}{1}', 'hkccr.ccs.tencentyun.com/benzi.io/blog.huaian.biz:amd64', github.sha) }}
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Build image
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Log into registry
+        run: echo ${{ secrets.TENCENT_PASSWORD }} | docker login hkccr.ccs.tencentyun.com -u ${{ secrets.TENCENT_USERNAME }} --password-stdin
+
+      - name: Push image
+        run: docker push $IMAGE_NAME
+        
+  deploy:
+    needs: push
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create the key
+        run: echo '${{ secrets.HUAIAN_BIZ_KEY }}' > key && chmod 600 key
+      - name: Deploy
+        run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "cd /mnt/deploy/caelus && docker pull $IMAGE_NAME && export IMAGE_NAME=$IMAGE_NAME && docker-compose down --rmi all && docker-compose up -d"
