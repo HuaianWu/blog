@@ -1,4 +1,4 @@
-baseURL = 'http://huaian.biz/'
-languageCode = 'en-us'
-title = 'Huaian's Blog'
+baseURL = "http://huaian.biz/"
+languageCode = "en-us"
+title = "Huaian's Blog"
 theme = "ananke"
