@@ -33,4 +33,4 @@ jobs:
       - name: Create the key
         run: echo '${{ secrets.HUAIAN_BIZ_KEY }}' > key && chmod 600 key
       - name: Deploy
-        run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "docker pull $IMAGE_NAME && docker run --name blog -d -p 80:80 $IMAGE_NAME"
+        run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "echo ${{ secrets.TENCENT_PASSWORD }} | docker login hkccr.ccs.tencentyun.com -u ${{ secrets.TENCENT_USERNAME }} --password-stdin && docker pull $IMAGE_NAME && docker run --name blog -d -p 80:80 $IMAGE_NAME"
