@@ -9,6 +9,6 @@ RUN apk update && apk add hugo \
 FROM nginx:alpine AS nginx
 ENV LANG C.UTF-8
 
-COPY nginx/default.conf /etc/nginx/conf.d
+COPY nginx/ /etc/nginx/conf.d/
 
 COPY --from=alpine /blog/hugo-blog/public/ /usr/share/nginx/blog/
