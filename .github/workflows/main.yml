@@ -38,7 +38,7 @@ jobs:
         run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "echo ${{ secrets.TENCENT_PASSWORD }} | docker login hkccr.ccs.tencentyun.com -u ${{ secrets.TENCENT_USERNAME }} --password-stdin"
 
       - name: Remove all unuse images of this image.
-        run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "docker rmi $(docker images -f=reference='hkccr.ccs.tencentyun.com/benzi.io/blog.huaian.biz*' -q)"
+        run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "docker rmi (docker images -f=reference='hkccr.ccs.tencentyun.com/benzi.io/blog.huaian.biz*' -q)"
 
       - name: Pull new image.
         run: ssh -i key -o StrictHostKeychecking=no root@huaian.biz "docker pull $IMAGE_NAME"
